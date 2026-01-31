@@ -1,94 +1,188 @@
 <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+
 <html lang="ar">
+
 <head>
+
 <meta charset="UTF-8">
+
 <title>AniPlay Full Free Advanced</title>
+
 <style>
+
   body { font-family: Arial; background:#1e1e1e; color:#f5f5f5; margin:0; padding:0; }
+
   header { background:#ff4500; padding:20px; text-align:center; font-size:28px; font-weight:bold; }
+
   main { padding:20px; }
+
   .anime-card { background:#333; border-radius:8px; padding:10px; margin-bottom:15px; display:flex; gap:15px; align-items:center; }
+
   .anime-card img { width:100px; border-radius:5px; }
+
   .anime-info { flex:1; }
+
   select,input,button { padding:8px; margin:5px 0; border-radius:5px; border:none; }
+
   button { background:#ff4500; color:white; cursor:pointer; }
+
   button:hover { background:#e03e00; }
+
   #player { width:100%; max-width:640px; height:360px; background:#000; margin-top:20px; border-radius:8px; }
+
   video { width:100%; height:100%; border-radius:8px; }
+
   #subtitles { margin-top:5px; color:#fff; font-size:16px; }
+
 </style>
+
 </head>
+
 <body>
+
 <header>AniPlay Advanced - مشاهدة الأنمي</header>
+
 <main>
+
 <input type="text" id="searchInput" placeholder="ابحث عن أنمي..." />
+
 <button onclick="searchAnime()">بحث</button>
+
 <div id="animeList"></div>
 
 <div id="player">
+
 <video id="videoPlayer" controls>
+
 <source id="videoSource" src="" type="video/mp4">
+
 </video>
+
 <div id="subtitles">الترجمة العربية هنا</div>
+
 </div>
+
 </main>
 
 <script>
+
 const animeListDiv = document.getElementById('animeList');
+
 const searchInput = document.getElementById('searchInput');
+
 const videoPlayer = document.getElementById('videoPlayer');
+
 const videoSource = document.getElementById('videoSource');
+
 const subtitlesDiv = document.getElementById('subtitles');
 
 // جلب الأنمي من Jikan API
+
 async function fetchAnime(query='') {
+
   try {
+
     const url = query 
+
       ? `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=10`
+
       : `https://api.jikan.moe/v4/anime?order_by=popularity&sort=desc&limit=10`;
+
     const response = await fetch(url);
+
     const data = await response.json();
+
     displayAnime(data.data);
+
   } catch (error) {
+
     animeListDiv.innerHTML = "حدث خطأ أثناء جلب الأنمي 😓";
+
     console.error(error);
+
   }
+
 }
 
 function displayAnime(animes) {
+
   animeListDiv.innerHTML = '';
+
   animes.forEach(anime => {
+
     const card = document.createElement('div');
+
     card.className = 'anime-card';
+
     card.innerHTML = `
+
       <img src="${anime.images.jpg.image_url}" alt="${anime.title}" />
+
       <div class="anime-info">
+
         <h3>${anime.title}</h3>
+
         <p>النوع: ${anime.genres.map(g => g.name).join(', ')}</p>
+
         <p>الحلقات: ${anime.episodes || 'غير محدد'}</p>
+
         <p>الحالة: ${anime.status}</p>
+
         <button onclick="playAnime('${anime.title}')">شاهد مع ترجمة عربية</button>
+
       </div>
+
     `;
+
     animeListDiv.appendChild(card);
+
   });
+
 }
 
 function searchAnime() {
+
   const query = searchInput.value.trim();
+
   fetchAnime(query);
+
 }
 
 function playAnime(title) {
+
   // ضع هنا رابط الفيديو القانوني
+
   videoSource.src = "https://www.w3schools.com/html/mov_bbb.mp4"; 
+
   videoPlayer.load();
+
   subtitlesDiv.textContent = "الترجمة العربية ل: " + title;
+
   videoPlayer.scrollIntoView({behavior:"smooth"});
+
 }
 
 // تحميل الأنمي الشائع تلقائياً عند فتح الموقع
+
 fetchAnime();
+
 </script>
+
 </body>
+
+</html>
+    
+  </body>
+  
 </html>
